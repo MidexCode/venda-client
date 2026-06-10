@@ -1,108 +1,9 @@
-import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
-import api from "../../lib/api";
-import useCartStore from "../../store/cartStore";
-import type { Product } from "../../types";
 import { FiHeart } from "react-icons/fi";
 import { BsCart3 } from "react-icons/bs";
-import { BsShopWindow } from "react-icons/bs";
-
-const fetchFeaturedProducts = async (): Promise<Product[]> => {
-  const res = await api.get<{ success: boolean; data: Product[] }>(
-    "/products/featured",
-  );
-  return res.data.data;
-};
-
-const StarRating = ({ rating }: { rating: number }) => {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
-      {[1, 2, 3, 4, 5].map((star) => (
-        <span
-          key={star}
-          style={{
-            fontSize: "11px",
-            color: star <= Math.round(rating) ? "#C9A84C" : "#D1D5DB",
-          }}
-        >
-          ★
-        </span>
-      ))}
-    </div>
-  );
-};
-
-const ProductCardSkeleton = () => (
-  <div
-    style={{
-      background: "#fff",
-      border: "0.5px solid #E5E2DC",
-      borderRadius: "12px",
-      overflow: "hidden",
-    }}
-  >
-    <div
-      style={{
-        height: "180px",
-        background: "#E5E2DC",
-        animation: "pulse 1.5s ease-in-out infinite",
-      }}
-    />
-    <div style={{ padding: "12px" }}>
-      <div
-        style={{
-          height: "10px",
-          background: "#E5E2DC",
-          borderRadius: "4px",
-          width: "60%",
-          marginBottom: "8px",
-        }}
-      />
-      <div
-        style={{
-          height: "13px",
-          background: "#E5E2DC",
-          borderRadius: "4px",
-          width: "85%",
-          marginBottom: "8px",
-        }}
-      />
-      <div
-        style={{
-          height: "10px",
-          background: "#E5E2DC",
-          borderRadius: "4px",
-          width: "40%",
-          marginBottom: "12px",
-        }}
-      />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            height: "16px",
-            background: "#E5E2DC",
-            borderRadius: "4px",
-            width: "35%",
-          }}
-        />
-        <div
-          style={{
-            width: "28px",
-            height: "28px",
-            background: "#E5E2DC",
-            borderRadius: "6px",
-          }}
-        />
-      </div>
-    </div>
-  </div>
-);
+import { HiStar } from "react-icons/hi";
+import useCartStore from "../../store/cartStore";
+import type { Product } from "../../types";
 
 const getBadge = (
   product: Product,
@@ -113,6 +14,20 @@ const getBadge = (
     return { label: "Sale", bg: "#C9A84C", color: "#0A1628" };
   return null;
 };
+
+const StarRating = ({ rating }: { rating: number }) => (
+  <div style={{ display: "flex", alignItems: "center", gap: "2px" }}>
+    {[1, 2, 3, 4, 5].map((star) => (
+      <HiStar
+        key={star}
+        style={{
+          fontSize: "11px",
+          color: star <= Math.round(rating) ? "#C9A84C" : "#D1D5DB",
+        }}
+      />
+    ))}
+  </div>
+);
 
 const ProductCard = ({ product }: { product: Product }) => {
   const navigate = useNavigate();
@@ -316,129 +231,4 @@ const ProductCard = ({ product }: { product: Product }) => {
   );
 };
 
-const FeaturedProducts = () => {
-  const navigate = useNavigate();
-
-  const {
-    data: products,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["featured-products"],
-    queryFn: fetchFeaturedProducts,
-  });
-
-  return (
-    <section style={{ background: "#F5F4F0" }} className="w-full py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between mb-6">
-          <h2
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              fontSize: "22px",
-              fontWeight: 600,
-              color: "#0A1628",
-            }}
-          >
-            Featured products
-          </h2>
-          <button
-            onClick={() => navigate({ to: "/shop" })}
-            style={{
-              fontSize: "12px",
-              color: "#C9A84C",
-              fontWeight: 500,
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              fontFamily: "'DM Sans', sans-serif",
-            }}
-          >
-            See all →
-          </button>
-        </div>
-
-        {isError && (
-          <div
-            style={{
-              background: "#FEF2F2",
-              border: "0.5px solid #FECACA",
-              borderRadius: "10px",
-              padding: "16px",
-              textAlign: "center",
-              fontSize: "13px",
-              color: "#991B1B",
-            }}
-          >
-            Failed to load products. Make sure your backend is running on port
-            5000.
-          </div>
-        )}
-
-        <div
-          className="grid gap-4"
-          style={{
-            gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))",
-          }}
-        >
-          {isLoading
-            ? Array.from({ length: 8 }).map((_, i) => (
-                <ProductCardSkeleton key={i} />
-              ))
-            : products?.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-        </div>
-
-        {!isLoading && !isError && (!products || products.length === 0) && (
-          <div style={{ textAlign: "center", padding: "48px 0" }}>
-            <div style={{ marginBottom: "12px" }}>
-              <BsShopWindow
-                style={{ fontSize: "48px", color: "#C9A84C", margin: "0 auto" }}
-              />
-            </div>{" "}
-            <p
-              style={{
-                fontFamily: "'Playfair Display', serif",
-                fontSize: "18px",
-                color: "#0A1628",
-                marginBottom: "6px",
-              }}
-            >
-              No featured products yet
-            </p>
-            <p style={{ fontSize: "13px", color: "#9CA3AF" }}>
-              Check back soon or browse all products
-            </p>
-            <button
-              onClick={() => navigate({ to: "/shop" })}
-              style={{
-                marginTop: "16px",
-                background: "#0A1628",
-                color: "#C9A84C",
-                border: "none",
-                padding: "10px 24px",
-                borderRadius: "8px",
-                fontSize: "13px",
-                fontWeight: 500,
-                cursor: "pointer",
-                fontFamily: "'DM Sans', sans-serif",
-              }}
-            >
-              Browse all products
-            </button>
-          </div>
-        )}
-      </div>
-
-      <style>{`
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.5; }
-        }
-      `}</style>
-    </section>
-  );
-};
-
-export default FeaturedProducts;
+export default ProductCard;

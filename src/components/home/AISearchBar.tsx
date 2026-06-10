@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
+import { HiSparkles } from "react-icons/hi";
+import { FiSearch } from "react-icons/fi";
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 const suggestions = [
   "Phones under ₦50k",
@@ -38,7 +41,6 @@ const AISearchBar = () => {
             boxShadow: "0 2px 16px rgba(10,22,40,0.06)",
           }}
         >
-          {/* Label */}
           <div
             style={{
               fontSize: "11px",
@@ -52,13 +54,11 @@ const AISearchBar = () => {
               gap: "6px",
             }}
           >
-            <span>✦</span>
+            <HiSparkles style={{ color: "#C9A84C", fontSize: "13px" }} />{" "}
             <span>Venda AI Search</span>
           </div>
 
-          {/* Input row */}
           <div className="flex gap-3 items-center">
-            {/* AI Icon */}
             <div
               style={{
                 width: "40px",
@@ -72,10 +72,9 @@ const AISearchBar = () => {
                 fontSize: "18px",
               }}
             >
-              ✦
+              <HiSparkles style={{ color: "#C9A84C", fontSize: "13px" }} />
             </div>
 
-            {/* Input */}
             <input
               value={query}
               onChange={(e) => setQuery(e.target.value)}
@@ -92,7 +91,6 @@ const AISearchBar = () => {
               }}
             />
 
-            {/* Search button */}
             <button
               onClick={handleSearch}
               disabled={loading}
@@ -116,14 +114,9 @@ const AISearchBar = () => {
             >
               {loading ? (
                 <>
-                  <span
+                  <AiOutlineLoading3Quarters
                     style={{
-                      width: "12px",
-                      height: "12px",
-                      border: "2px solid rgba(201,168,76,0.3)",
-                      borderTop: "2px solid #C9A84C",
-                      borderRadius: "50%",
-                      display: "inline-block",
+                      fontSize: "13px",
                       animation: "spin 0.7s linear infinite",
                     }}
                   />
@@ -131,24 +124,13 @@ const AISearchBar = () => {
                 </>
               ) : (
                 <>
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="m21 21-4.35-4.35" />
-                  </svg>
+                  <FiSearch style={{ fontSize: "14px" }} />
                   Search
                 </>
               )}
             </button>
           </div>
 
-          {/* Suggestion chips */}
           <div className="flex flex-wrap gap-2 mt-3">
             <span
               style={{

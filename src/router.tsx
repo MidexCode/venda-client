@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-router";
 import Layout from "./components/layout/Layout";
 import Home from "./pages/Home";
+import Shop from "./pages/Shop";
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -26,7 +27,7 @@ const homeRoute = createRoute({
 const shopRoute = createRoute({
   getParentRoute: () => layoutRoute,
   path: "/shop",
-  component: () => <div className="p-8 text-navy">Shop — coming soon</div>,
+  component: Shop,
 });
 
 const productDetailRoute = createRoute({

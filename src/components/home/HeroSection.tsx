@@ -1,8 +1,19 @@
 import { useNavigate } from "@tanstack/react-router";
+import { BsPhone, BsShieldLock } from "react-icons/bs";
+import { MdCheckroom } from "react-icons/md";
+import { GiConverseShoe } from "react-icons/gi";
+import type { IconType } from "react-icons";
 
-const miniProducts = [
+const miniProducts: {
+  icon: IconType;
+  name: string;
+  price: string;
+  badge: string;
+  badgeColor: string;
+  badgeText: string;
+}[] = [
   {
-    emoji: "📱",
+    icon: BsPhone,
     name: "iPhone 15 Pro Max",
     price: "₦ 820,000",
     badge: "New",
@@ -10,7 +21,7 @@ const miniProducts = [
     badgeText: "#0A1628",
   },
   {
-    emoji: "👗",
+    icon: MdCheckroom,
     name: "Ankara Midi Dress",
     price: "₦ 18,500",
     badge: "Hot",
@@ -18,7 +29,7 @@ const miniProducts = [
     badgeText: "#fff",
   },
   {
-    emoji: "👟",
+    icon: GiConverseShoe,
     name: "Nike Air Force 1",
     price: "₦ 65,000",
     badge: "Sale",
@@ -192,11 +203,12 @@ const HeroSection = () => {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
-                    fontSize: "22px",
                     flexShrink: 0,
                   }}
                 >
-                  {product.emoji}
+                  <product.icon
+                    style={{ fontSize: "22px", color: "#C9A84C" }}
+                  />
                 </div>
 
                 <div style={{ flex: 1 }}>
@@ -244,7 +256,9 @@ const HeroSection = () => {
                 borderRadius: "10px",
               }}
             >
-              <span style={{ fontSize: "16px" }}>🔒</span>
+              <BsShieldLock
+                style={{ color: "#C9A84C", fontSize: "18px", flexShrink: 0 }}
+              />
               <span
                 style={{
                   fontSize: "11px",

@@ -9,6 +9,7 @@ import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import ProductDetail from "./pages/ProductDetail";
 import SellerStorefront from "./pages/SellerStorefront";
+import Deals from "./pages/Deals";
 
 const rootRoute = createRootRoute({
   component: () => <Outlet />,
@@ -47,7 +48,7 @@ const sellerStorefrontRoute = createRoute({
 const dealsRoute = createRoute({
   getParentRoute: () => layoutRoute,
   path: "/deals",
-  component: () => <div className="p-8 text-navy">Deals — coming soon</div>,
+  component: Deals,
 });
 
 const cartRoute = createRoute({

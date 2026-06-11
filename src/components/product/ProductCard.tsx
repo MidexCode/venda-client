@@ -146,7 +146,7 @@ const ProductCard = ({ product }: { product: Product }) => {
         <div
           style={{ fontSize: "10px", color: "#9CA3AF", marginBottom: "3px" }}
         >
-          {product.seller.storeName}
+          {product.seller?.storeName ?? ""}
         </div>
         <div
           style={{

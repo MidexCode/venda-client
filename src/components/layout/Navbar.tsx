@@ -1,11 +1,20 @@
+import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import { useUser, UserButton, SignInButton } from "@clerk/clerk-react";
+import { FiSearch } from "react-icons/fi";
 import useCartStore from "../../store/cartStore";
 
 const Navbar = () => {
   const { isSignedIn } = useUser();
   const cartCount = useCartStore((s) => s.items.length);
   const navigate = useNavigate();
+  const [query, setQuery] = useState("");
+
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && query.trim()) {
+      navigate({ to: "/shop", search: { q: query } as never });
+    }
+  };
 
   return (
     <nav style={{ background: "#0A1628" }} className="w-full sticky top-0 z-50">
@@ -28,7 +37,7 @@ const Navbar = () => {
           {[
             { label: "Home", to: "/" },
             { label: "Shop", to: "/shop" },
-            { label: "Sellers", to: "/sellers/techub-lagos" },
+            { label: "Sellers", to: "/sellers" },
             { label: "Deals", to: "/deals" },
             { label: "Track order", to: "/track" },
           ].map((link) => (
@@ -56,8 +65,7 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <button
-            onClick={() => navigate({ to: "/shop" })}
+          <div
             style={{
               background: "rgba(255,255,255,0.07)",
               border: "0.5px solid rgba(255,255,255,0.12)",
@@ -66,25 +74,39 @@ const Navbar = () => {
               display: "flex",
               alignItems: "center",
               gap: "8px",
-              width: "160px",
-              cursor: "text",
+              width: "200px",
+              transition: "border-color 0.15s",
             }}
+            onFocus={(e) =>
+              (e.currentTarget.style.borderColor = "rgba(201,168,76,0.5)")
+            }
+            onBlur={(e) =>
+              (e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)")
+            }
           >
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="rgba(255,255,255,0.35)"
-              strokeWidth="2"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <path d="m21 21-4.35-4.35" />
-            </svg>
-            <span style={{ fontSize: "12px", color: "rgba(255,255,255,0.35)" }}>
-              Search Venda...
-            </span>
-          </button>
+            <FiSearch
+              style={{
+                color: "rgba(255,255,255,0.35)",
+                fontSize: "14px",
+                flexShrink: 0,
+              }}
+            />
+            <input
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              onKeyDown={handleSearch}
+              placeholder="Search Venda..."
+              style={{
+                background: "transparent",
+                border: "none",
+                outline: "none",
+                fontSize: "12px",
+                color: "#fff",
+                fontFamily: "'DM Sans', sans-serif",
+                width: "100%",
+              }}
+            />
+          </div>
 
           <Link to="/cart" style={{ textDecoration: "none" }}>
             <button
